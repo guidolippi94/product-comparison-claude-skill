@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product comparison</title>
+<meta name="description" content="__DESCRIPTION__">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ==== STYLE TOKENS: edit here to apply another brand ==== */
+:root{
+  --bg:#fbf9f4; --surface:#ffffff; --surface-2:#f4f1e8;
+  --ink:#161616; --muted:#66625a; --line:#e4dfd2;
+  --accent:#ff6b3d; --accent-ink:#161616;
+  --hi:#ffe27a; --hi-ink:#161616;
+  --good:#1a8f5a; --bad:#c93f3f; --warn:#b7791f;
+  --border:2px solid var(--ink);
+  --shadow:4px 4px 0 var(--ink);
+  --radius:14px;
+  --font-display:'Fraunces',Georgia,'Times New Roman',serif;
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121211; --surface:#1b1b19; --surface-2:#242320;
+    --ink:#f4f1ea; --muted:#a8a396; --line:#34322c;
+    --accent:#ff855c; --accent-ink:#161616;
+    --hi:#5b4a10; --hi-ink:#fff3c4;
+    --good:#4cc38a; --bad:#ef7676; --warn:#e2b14f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121211; --surface:#1b1b19; --surface-2:#242320;
+  --ink:#f4f1ea; --muted:#a8a396; --line:#34322c;
+  --accent:#ff855c; --accent-ink:#161616;
+  --hi:#5b4a10; --hi-ink:#fff3c4;
+  --good:#4cc38a; --bad:#ef7676; --warn:#e2b14f;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 72px}
+h1,h2,h3{font-family:var(--font-display);line-height:1.15;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(30px,5vw,48px);font-weight:800}
+h2{font-size:clamp(22px,3vw,30px);font-weight:800;margin-bottom:14px}
+h3{font-size:19px;font-weight:600}
+a{color:inherit}
+.muted{color:var(--muted)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.btn{font:600 14px/1 var(--font-body);display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:10px;border:var(--border);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none;transition:transform .08s,box-shadow .08s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.btn:active{transform:none;box-shadow:none}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{border-color:var(--line);box-shadow:none;font-weight:500;padding:8px 12px}
+.btn.ghost:hover{border-color:var(--ink);box-shadow:none;transform:none}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1.5px solid var(--line);border-radius:999px;font-size:13px;background:var(--surface)}
+.chip b{font-weight:600}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;border:1.5px solid currentColor;white-space:nowrap}
+.badge.high{color:var(--good)} .badge.medium,.badge.mixed{color:var(--warn)} .badge.low{color:var(--bad)}
+.badge.neutral{color:var(--muted)}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.kicker{font:600 12px/1 var(--font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.actions{display:flex;gap:8px}
+.lead{font-size:clamp(17px,2vw,20px);max-width:760px;margin:14px 0 18px}
+.demo{background:var(--hi);color:var(--hi-ink);border:var(--border);border-radius:10px;padding:8px 14px;font-weight:600;margin-bottom:16px}
+.toc{display:flex;gap:6px;flex-wrap:wrap;margin:26px 0 8px;position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line)}
+.toc a{font-size:13px;font-weight:600;text-decoration:none;padding:6px 11px;border-radius:8px;color:var(--muted)}
+.toc a:hover{background:var(--surface-2);color:var(--ink)}
+section{margin-top:44px;scroll-margin-top:60px}
+
+.pick{border:var(--border);border-radius:var(--radius);box-shadow:var(--shadow);background:var(--surface);padding:24px;display:grid;grid-template-columns:1.4fr 1fr;gap:28px}
+.pick .flag{display:inline-block;background:var(--accent);color:var(--accent-ink);border:var(--border);padding:4px 12px;border-radius:8px;font-weight:700;font-size:13px;margin-bottom:12px}
+.pick h3{font-size:clamp(24px,3.4vw,34px);font-weight:800}
+.pick ul{padding-left:20px;margin:14px 0}
+.pick li{margin:7px 0}
+.pick .notfor{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-size:15px}
+.pricebox{border:1.5px solid var(--line);border-radius:12px;padding:16px;background:var(--surface-2);align-self:start}
+.pricebox .amount{font:800 34px/1.1 var(--font-display)}
+.pricebox .small{font-size:13px;color:var(--muted);margin:4px 0 14px}
+.alts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:16px}
+.alt{border:1.5px solid var(--line);border-radius:12px;padding:14px;background:var(--surface)}
+.alt .who{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.alt b{display:block;margin:4px 0}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{border:1.5px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:10px}
+.card.is-pick{border:var(--border);box-shadow:var(--shadow)}
+.card .head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card .brand{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.card .score{font:800 30px/1 var(--font-display);text-align:right}
+.card .score small{font:500 12px var(--font-body);color:var(--muted);display:block}
+.card ul{margin:0;padding-left:18px;font-size:14px}
+.card li{margin:3px 0}
+.card .pro li::marker{color:var(--good)} .card .con li::marker{color:var(--bad)}
+.card .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:8px;flex-wrap:wrap}
+.mono{font-family:var(--font-mono)}
+.rank{font:700 12px var(--font-mono);background:var(--ink);color:var(--bg);padding:2px 8px;border-radius:6px}
+
+.panel{border:1.5px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:20px}
+.weights{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.slider{margin-bottom:14px}
+.slider label{display:flex;justify-content:space-between;font-weight:600;font-size:14px;gap:8px}
+.slider .desc{font-size:12.5px;color:var(--muted);margin-top:2px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.bar{display:grid;grid-template-columns:180px 1fr 44px;gap:10px;align-items:center;margin:9px 0;font-size:14px}
+.bar .track{height:14px;border-radius:7px;background:var(--surface-2);border:1.5px solid var(--line);overflow:hidden}
+.bar .fill{height:100%;background:var(--ink);border-radius:5px;transition:width .25s}
+.bar.first .fill{background:var(--accent)}
+.bar .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.bar .val{font:600 13px var(--font-mono);text-align:right}
+.note{font-size:13.5px;color:var(--muted);margin-top:12px}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar input[type=search]{font:500 14px var(--font-body);padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);min-width:200px;flex:1;max-width:320px}
+.toolbar input[type=search]:focus{border-color:var(--ink);outline:none}
+.pvis{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pvis label{cursor:pointer}
+.pvis input{position:absolute;opacity:0;pointer-events:none}
+.pvis span{display:inline-block;padding:5px 11px;border-radius:999px;border:1.5px solid var(--ink);font-size:13px;font-weight:600;user-select:none}
+.pvis input:not(:checked)+span{opacity:.4;border-style:dashed;text-decoration:line-through}
+.pvis input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.tablewrap{overflow-x:auto;border:1.5px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:640px;font-size:14.5px}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--surface-2);position:sticky;top:0;font-weight:700;vertical-align:bottom;min-width:150px}
+thead th .price{display:block;font:500 13px var(--font-mono);color:var(--muted);margin-top:2px}
+thead th .pickmark{display:inline-block;background:var(--accent);color:var(--accent-ink);font-size:11px;font-weight:700;padding:1px 7px;border-radius:6px;margin-bottom:4px}
+tbody th{font-weight:500;background:var(--surface);position:sticky;left:0;z-index:1;min-width:170px;border-right:1px solid var(--line)}
+thead th:first-child{position:sticky;left:0;z-index:2}
+tr.grp th{background:var(--surface-2);font:700 12px var(--font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);position:static}
+td.best{background:var(--hi);color:var(--hi-ink);font-weight:700}
+td .yes{color:var(--good);font-weight:700} td .no{color:var(--bad);font-weight:700} td .nd{color:var(--muted)}
+tbody th .rownote,td .rownote{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:3px}
+sup a{font-size:11px;font-weight:700;text-decoration:none;color:var(--accent);margin-left:2px}
+th .unit{color:var(--muted);font-size:12px}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+
+.offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.offer{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.offer:first-of-type{border-top:0}
+.offer .shop{font-weight:600}
+.offer .meta{font-size:12.5px;color:var(--muted)}
+.offer .amt{font:600 17px var(--font-mono);text-align:right}
+.offer.best .amt{color:var(--good)}
+.offer .go{grid-column:1 / -1}
+.sources{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.sources li{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);display:flex;gap:10px 14px;flex-wrap:wrap;align-items:baseline;scroll-margin-top:70px}
+.sources li:target{border-color:var(--accent);box-shadow:3px 3px 0 var(--accent)}
+.sources .sid{font:700 12px var(--font-mono);background:var(--ink);color:var(--bg);padding:2px 7px;border-radius:6px}
+.sources a.t{font-weight:600}
+.sources .sub{font-size:13px;color:var(--muted);flex-basis:100%}
+.limits{padding-left:20px}
+.limits li{margin:6px 0}
+footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+
+@media (max-width:820px){
+  .pick{grid-template-columns:1fr;padding:18px}
+  .weights{grid-template-columns:1fr}
+  .bar{grid-template-columns:120px 1fr 40px}
+  th,td{padding:10px}
+}
+@media print{
+  .actions,.toc,.toolbar,.pvis,.weights-only,.btn.go{display:none!important}
+  body{background:#fff;color:#000}
+  .pick,.card.is-pick{box-shadow:none}
+  section{break-inside:avoid-page}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="demo" class="demo" hidden data-i18n="example"></div>
+  <header>
+    <div class="topbar">
+      <span class="kicker" id="kicker"></span>
+      <div class="actions">
+        <button class="btn ghost" id="btn-theme" type="button" data-i18n="theme"></button>
+        <button class="btn ghost" id="btn-print" type="button" data-i18n="print"></button>
+      </div>
+    </div>
+    <h1 id="title"></h1>
+    <p class="lead" id="summary"></p>
+    <ul class="chips" id="needs"></ul>
+  </header>
+
+  <nav class="toc" data-i18n-aria="nav_aria">
+    <a href="#pick" data-i18n="nav_pick"></a>
+    <a href="#products" data-i18n="nav_products"></a>
+    <a href="#priorities" data-i18n="nav_priorities"></a>
+    <a href="#compare" data-i18n="nav_compare"></a>
+    <a href="#buy" data-i18n="nav_buy"></a>
+    <a href="#sources" data-i18n="nav_sources"></a>
+  </nav>
+
+  <section id="pick"><h2 data-i18n="h_pick"></h2><div id="pick-box"></div><div class="alts" id="alts"></div></section>
+  <section id="products"><h2 data-i18n="h_products"></h2><div class="grid" id="cards"></div></section>
+
+  <section id="priorities">
+    <h2 data-i18n="h_priorities"></h2>
+    <div class="panel">
+      <div class="weights">
+        <div class="weights-only">
+          <div id="sliders"></div>
+          <button class="btn ghost" id="btn-reset" type="button" data-i18n="reset"></button>
+        </div>
+        <div>
+          <div id="ranking"></div>
+          <p class="note" id="rank-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <h2 data-i18n="h_compare"></h2>
+    <div class="toolbar">
+      <input type="search" id="q" data-i18n-ph="search" data-i18n-aria="search">
+      <button class="btn ghost" id="t-diff" type="button" aria-pressed="false" data-i18n="only_diff"></button>
+      <button class="btn ghost" id="t-hi" type="button" aria-pressed="true" data-i18n="highlight"></button>
+      <button class="btn ghost" id="t-sort" type="button" aria-pressed="false" data-i18n="sort"></button>
+    </div>
+    <div class="pvis" id="pvis" role="group" data-i18n-aria="visible"></div>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </section>
+
+  <section id="buy">
+    <h2 data-i18n="h_buy"></h2>
+    <p class="muted" id="price-note" style="margin-top:-6px"></p>
+    <div class="offers" id="offers"></div>
+  </section>
+
+  <section id="sources">
+    <h2 data-i18n="h_sources"></h2>
+    <ul class="sources" id="source-list"></ul>
+    <h3 style="margin:26px 0 8px" data-i18n="h_limits"></h3>
+    <ul class="limits" id="limits"></ul>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+(function(){
+'use strict';
+
+/* ---------- translations (add a language by adding a block) ---------- */
+const T = {
+en:{theme:'Theme',print:'Print',nav_aria:'Sections',nav_pick:'Our pick',nav_products:'Products',nav_priorities:'Your priorities',nav_compare:'Comparison',nav_buy:'Where to buy',nav_sources:'Sources and limits',
+ h_pick:'Recommended choice',h_products:'Products at a glance',h_priorities:'Change the priorities, change the ranking',h_compare:'Detailed comparison',h_buy:'Where to buy at the best price',h_sources:'Sources and limits of the research',h_limits:'What could not be verified',
+ flag:'My pick',notfor:'Not for you if: ',go:'Go to the offer',official:'Official site',price_unverified:'Price not verified',price_unverified_hint:'Check directly on the manufacturer site.',verified_on:'verified on {date}',updated:'updated {date}',
+ example:'Example data: products, prices and sources are fictional.',reset:'Reset original weights',search:'Search a feature',only_diff:'Differences only',highlight:'Highlight the best',sort:'Sort by score',visible:'Visible products',
+ col_feature:'Feature',g_brief:'At a glance',r_price:'Best verified price',r_score:'Overall score (current weights)',r_conf:'Data confidence',g_scores:'Scores by criterion (0-10)',mark:'Pick',price_na:'price n/a',
+ yes:'Yes',no:'No',na:'n/a',nomatch:'No feature matches the filters.',rank_ok:'With these weights the top product is also my recommended pick.',rank_other:'With these weights the top product is {top}. My pick ({mine}) also weighs price, data confidence and known risks.',rank_zero:'Set at least one weight to see the ranking.',
+ best_price:'Best price',not_verified:'Not verified',sold_by:'Sold by {name}',open_page:'Open the page',no_offers:'No verified offers.',price_note:'Prices were checked on the store pages on the date shown. No affiliate links: links go to the store product page. Prices can change.',
+ no_limits:'No particular limits declared.',footer:'Sheet generated by Claude from independent tests, studies and verified reviews. No sponsorship, no affiliate links.',
+ usage:'Use',budget:'Budget',priority:'Priority {n}',constraint:'Constraint',
+ c_high:'Solid data',c_medium:'Fair data',c_low:'Thin data',i_high:'Independent',i_mixed:'Mixed independence',i_low:'Not independent',
+ t_lab_test:'Lab test',t_study:'Scientific study',t_authority:'Authority or regulation',t_verified_review:'Verified review',t_user_feedback:'User feedback',t_manufacturer:'Manufacturer data',t_other:'Other'},
+it:{theme:'Tema',print:'Stampa',nav_aria:'Sezioni',nav_pick:'La scelta',nav_products:'Prodotti',nav_priorities:'Le tue priorità',nav_compare:'Confronto',nav_buy:'Dove comprare',nav_sources:'Fonti e limiti',
+ h_pick:'La scelta consigliata',h_products:'I prodotti a colpo d’occhio',h_priorities:'Cambia le priorità, cambia la classifica',h_compare:'Confronto dettagliato',h_buy:'Dove comprare al prezzo migliore',h_sources:'Fonti e limiti della ricerca',h_limits:'Cosa non è stato possibile verificare',
+ flag:'La mia scelta',notfor:'Non fa per te se: ',go:'Vai all’offerta',official:'Sito ufficiale',price_unverified:'Prezzo non verificato',price_unverified_hint:'Controlla direttamente sul sito del produttore.',verified_on:'verificato il {date}',updated:'aggiornato al {date}',
+ example:'Dati di esempio: prodotti, prezzi e fonti sono fittizi.',reset:'Ripristina i pesi originali',search:'Cerca una caratteristica',only_diff:'Solo differenze',highlight:'Evidenzia il migliore',sort:'Ordina per punteggio',visible:'Prodotti visibili',
+ col_feature:'Caratteristica',g_brief:'In breve',r_price:'Prezzo migliore verificato',r_score:'Punteggio complessivo (pesi attuali)',r_conf:'Affidabilità dei dati',g_scores:'Punteggi per criterio (0-10)',mark:'Scelta',price_na:'prezzo n.d.',
+ yes:'Sì',no:'No',na:'n.d.',nomatch:'Nessuna caratteristica corrisponde ai filtri.',rank_ok:'Con questi pesi il primo è anche la mia scelta consigliata.',rank_other:'Con questi pesi il primo è {top}. La mia scelta ({mine}) tiene conto anche di prezzo, affidabilità dei dati e rischi noti.',rank_zero:'Assegna almeno un peso per vedere la classifica.',
+ best_price:'Prezzo migliore',not_verified:'Non verificato',sold_by:'Venduto da {name}',open_page:'Apri la pagina',no_offers:'Nessuna offerta verificata.',price_note:'Prezzi verificati sulle pagine dei negozi alla data indicata. Nessun link affiliato: i link portano alla pagina prodotto del negozio. I prezzi possono cambiare.',
+ no_limits:'Nessun limite particolare dichiarato.',footer:'Scheda generata da Claude con ricerca su test indipendenti, studi e recensioni verificate. Nessuna sponsorizzazione, nessun link affiliato.',
+ usage:'Uso',budget:'Budget',priority:'Priorità {n}',constraint:'Vincolo',
+ c_high:'Dati solidi',c_medium:'Dati discreti',c_low:'Dati scarsi',i_high:'Indipendente',i_mixed:'Indipendenza mista',i_low:'Non indipendente',
+ t_lab_test:'Test di laboratorio',t_study:'Studio scientifico',t_authority:'Ente o normativa',t_verified_review:'Recensione verificata',t_user_feedback:'Feedback utenti',t_manufacturer:'Dati del produttore',t_other:'Altro'},
+es:{theme:'Tema',print:'Imprimir',nav_aria:'Secciones',nav_pick:'Nuestra elección',nav_products:'Productos',nav_priorities:'Tus prioridades',nav_compare:'Comparativa',nav_buy:'Dónde comprar',nav_sources:'Fuentes y límites',
+ h_pick:'Elección recomendada',h_products:'Los productos de un vistazo',h_priorities:'Cambia las prioridades, cambia la clasificación',h_compare:'Comparativa detallada',h_buy:'Dónde comprar al mejor precio',h_sources:'Fuentes y límites de la investigación',h_limits:'Qué no se pudo verificar',
+ flag:'Mi elección',notfor:'No es para ti si: ',go:'Ir a la oferta',official:'Sitio oficial',price_unverified:'Precio no verificado',price_unverified_hint:'Consulta directamente en el sitio del fabricante.',verified_on:'verificado el {date}',updated:'actualizado el {date}',
+ example:'Datos de ejemplo: productos, precios y fuentes son ficticios.',reset:'Restablecer pesos originales',search:'Buscar una característica',only_diff:'Solo diferencias',highlight:'Resaltar el mejor',sort:'Ordenar por puntuación',visible:'Productos visibles',
+ col_feature:'Característica',g_brief:'En resumen',r_price:'Mejor precio verificado',r_score:'Puntuación global (pesos actuales)',r_conf:'Fiabilidad de los datos',g_scores:'Puntuaciones por criterio (0-10)',mark:'Elección',price_na:'precio n/d',
+ yes:'Sí',no:'No',na:'n/d',nomatch:'Ninguna característica coincide con los filtros.',rank_ok:'Con estos pesos el primero es también mi elección recomendada.',rank_other:'Con estos pesos el primero es {top}. Mi elección ({mine}) también pondera precio, fiabilidad de los datos y riesgos conocidos.',rank_zero:'Asigna al menos un peso para ver la clasificación.',
+ best_price:'Mejor precio',not_verified:'No verificado',sold_by:'Vendido por {name}',open_page:'Abrir la página',no_offers:'Sin ofertas verificadas.',price_note:'Precios comprobados en las páginas de las tiendas en la fecha indicada. Sin enlaces de afiliado: los enlaces llevan a la ficha del producto en la tienda. Los precios pueden cambiar.',
+ no_limits:'Sin límites particulares declarados.',footer:'Ficha generada por Claude a partir de pruebas independientes, estudios y reseñas verificadas. Sin patrocinios ni enlaces de afiliado.',
+ usage:'Uso',budget:'Presupuesto',priority:'Prioridad {n}',constraint:'Requisito',
+ c_high:'Datos sólidos',c_medium:'Datos aceptables',c_low:'Datos escasos',i_high:'Independiente',i_mixed:'Independencia mixta',i_low:'No independiente',
+ t_lab_test:'Prueba de laboratorio',t_study:'Estudio científico',t_authority:'Organismo o normativa',t_verified_review:'Reseña verificada',t_user_feedback:'Opiniones de usuarios',t_manufacturer:'Datos del fabricante',t_other:'Otro'},
+fr:{theme:'Thème',print:'Imprimer',nav_aria:'Sections',nav_pick:'Notre choix',nav_products:'Produits',nav_priorities:'Vos priorités',nav_compare:'Comparatif',nav_buy:'Où acheter',nav_sources:'Sources et limites',
+ h_pick:'Choix recommandé',h_products:'Les produits en un coup d’œil',h_priorities:'Changez les priorités, changez le classement',h_compare:'Comparatif détaillé',h_buy:'Où acheter au meilleur prix',h_sources:'Sources et limites de la recherche',h_limits:'Ce qui n’a pas pu être vérifié',
+ flag:'Mon choix',notfor:'Pas pour vous si : ',go:'Voir l’offre',official:'Site officiel',price_unverified:'Prix non vérifié',price_unverified_hint:'Vérifiez directement sur le site du fabricant.',verified_on:'vérifié le {date}',updated:'mis à jour le {date}',
+ example:'Données d’exemple : produits, prix et sources sont fictifs.',reset:'Rétablir les poids d’origine',search:'Rechercher une caractéristique',only_diff:'Différences uniquement',highlight:'Surligner le meilleur',sort:'Trier par note',visible:'Produits visibles',
+ col_feature:'Caractéristique',g_brief:'En bref',r_price:'Meilleur prix vérifié',r_score:'Note globale (poids actuels)',r_conf:'Fiabilité des données',g_scores:'Notes par critère (0-10)',mark:'Choix',price_na:'prix n/d',
+ yes:'Oui',no:'Non',na:'n/d',nomatch:'Aucune caractéristique ne correspond aux filtres.',rank_ok:'Avec ces poids, le premier est aussi mon choix recommandé.',rank_other:'Avec ces poids, le premier est {top}. Mon choix ({mine}) tient aussi compte du prix, de la fiabilité des données et des risques connus.',rank_zero:'Attribuez au moins un poids pour voir le classement.',
+ best_price:'Meilleur prix',not_verified:'Non vérifié',sold_by:'Vendu par {name}',open_page:'Ouvrir la page',no_offers:'Aucune offre vérifiée.',price_note:'Prix relevés sur les pages des magasins à la date indiquée. Aucun lien d’affiliation : les liens mènent à la fiche produit du magasin. Les prix peuvent changer.',
+ no_limits:'Aucune limite particulière déclarée.',footer:'Fiche générée par Claude à partir de tests indépendants, d’études et d’avis vérifiés. Aucun sponsoring, aucun lien d’affiliation.',
+ usage:'Usage',budget:'Budget',priority:'Priorité {n}',constraint:'Contrainte',
+ c_high:'Données solides',c_medium:'Données correctes',c_low:'Données limitées',i_high:'Indépendante',i_mixed:'Indépendance mixte',i_low:'Non indépendante',
+ t_lab_test:'Test en laboratoire',t_study:'Étude scientifique',t_authority:'Organisme ou réglementation',t_verified_review:'Avis vérifié',t_user_feedback:'Retours d’utilisateurs',t_manufacturer:'Données du fabricant',t_other:'Autre'},
+de:{theme:'Design',print:'Drucken',nav_aria:'Abschnitte',nav_pick:'Unsere Wahl',nav_products:'Produkte',nav_priorities:'Deine Prioritäten',nav_compare:'Vergleich',nav_buy:'Wo kaufen',nav_sources:'Quellen und Grenzen',
+ h_pick:'Empfohlene Wahl',h_products:'Die Produkte auf einen Blick',h_priorities:'Prioritäten ändern, Rangfolge ändern',h_compare:'Detailvergleich',h_buy:'Wo du am günstigsten kaufst',h_sources:'Quellen und Grenzen der Recherche',h_limits:'Was nicht überprüft werden konnte',
+ flag:'Meine Wahl',notfor:'Nichts für dich, wenn: ',go:'Zum Angebot',official:'Offizielle Seite',price_unverified:'Preis nicht geprüft',price_unverified_hint:'Bitte direkt beim Hersteller prüfen.',verified_on:'geprüft am {date}',updated:'Stand {date}',
+ example:'Beispieldaten: Produkte, Preise und Quellen sind fiktiv.',reset:'Ursprüngliche Gewichte',search:'Merkmal suchen',only_diff:'Nur Unterschiede',highlight:'Bestes hervorheben',sort:'Nach Punktzahl sortieren',visible:'Sichtbare Produkte',
+ col_feature:'Merkmal',g_brief:'Kurzüberblick',r_price:'Bester geprüfter Preis',r_score:'Gesamtpunktzahl (aktuelle Gewichte)',r_conf:'Datenlage',g_scores:'Punkte je Kriterium (0-10)',mark:'Wahl',price_na:'Preis k. A.',
+ yes:'Ja',no:'Nein',na:'k. A.',nomatch:'Kein Merkmal passt zu den Filtern.',rank_ok:'Mit diesen Gewichten liegt auch meine empfohlene Wahl vorn.',rank_other:'Mit diesen Gewichten liegt {top} vorn. Meine Wahl ({mine}) berücksichtigt auch Preis, Datenlage und bekannte Risiken.',rank_zero:'Vergib mindestens ein Gewicht, um die Rangfolge zu sehen.',
+ best_price:'Bester Preis',not_verified:'Nicht geprüft',sold_by:'Verkauf durch {name}',open_page:'Seite öffnen',no_offers:'Keine geprüften Angebote.',price_note:'Preise am angegebenen Datum auf den Shopseiten geprüft. Keine Affiliate-Links: Die Links führen zur Produktseite des Shops. Preise können sich ändern.',
+ no_limits:'Keine besonderen Grenzen angegeben.',footer:'Von Claude erstellt aus unabhängigen Tests, Studien und geprüften Bewertungen. Keine Sponsoren, keine Affiliate-Links.',
+ usage:'Nutzung',budget:'Budget',priority:'Priorität {n}',constraint:'Bedingung',
+ c_high:'Solide Daten',c_medium:'Ordentliche Daten',c_low:'Dünne Daten',i_high:'Unabhängig',i_mixed:'Teilweise unabhängig',i_low:'Nicht unabhängig',
+ t_lab_test:'Labortest',t_study:'Wissenschaftliche Studie',t_authority:'Behörde oder Norm',t_verified_review:'Geprüfte Rezension',t_user_feedback:'Nutzerfeedback',t_manufacturer:'Herstellerangaben',t_other:'Sonstiges'}
+};
+
+if (!DATA){ document.body.textContent = 'No data.'; return; }
+const LOC = (DATA.meta && DATA.meta.locale) || 'en-US';
+const LANG = LOC.split('-')[0].toLowerCase();
+const L = Object.assign({}, T.en, T[LANG] || {});
+const fill = (s, o) => s.replace(/\{(\w+)\}/g, (m, k) => o[k] != null ? o[k] : m);
+document.documentElement.lang = LANG;
+
+/* ---------- helpers ---------- */
+const $ = (s, r) => (r || document).querySelector(s);
+function h(tag, attrs){
+  const el = document.createElement(tag);
+  if (attrs) for (const k in attrs){
+    const v = attrs[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k.slice(0,2) === 'on' && typeof v === 'function') el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : String(v));
+  }
+  for (let i = 2; i < arguments.length; i++){
+    const kids = [].concat(arguments[i]);
+    for (const kid of kids){
+      if (kid == null || kid === false) continue;
+      el.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+    }
+  }
+  return el;
+}
+function safeUrl(u){
+  try { const x = new URL(u); return (x.protocol === 'https:' || x.protocol === 'http:') ? x.href : null; }
+  catch(e){ return null; }
+}
+let money;
+try { const nf = new Intl.NumberFormat(LOC, {style:'currency', currency:DATA.meta.currency || 'USD'}); money = n => nf.format(n); }
+catch(e){ money = n => String(n); }
+let dateFmt;
+try { const df = new Intl.DateTimeFormat(LOC, {year:'numeric', month:'2-digit', day:'2-digit', timeZone:'UTC'}); dateFmt = s => /^\d{4}-\d{2}-\d{2}$/.test(s || '') ? df.format(new Date(s + 'T00:00:00Z')) : (s || ''); }
+catch(e){ dateFmt = s => s || ''; }
+const nf1 = new Intl.NumberFormat(LOC, {minimumFractionDigits:1, maximumFractionDigits:1});
+const one = n => nf1.format(Math.round(n * 10) / 10);
+const nfAny = new Intl.NumberFormat(LOC);
+
+document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = L[e.dataset.i18n] || '');
+document.querySelectorAll('[data-i18n-ph]').forEach(e => e.setAttribute('placeholder', L[e.dataset.i18nPh] || ''));
+document.querySelectorAll('[data-i18n-aria]').forEach(e => e.setAttribute('aria-label', L[e.dataset.i18nAria] || ''));
+
+const P = DATA.products, C = DATA.criteria;
+const byId = {}; P.forEach(p => byId[p.id] = p);
+const state = { w: Object.fromEntries(C.map(c => [c.id, c.weight])), hidden:new Set(), diff:false, hi:true, sort:false, q:'' };
+
+/* ---------- calculations ---------- */
+function scores(){
+  const sum = C.reduce((a,c) => a + state.w[c.id], 0), out = {};
+  P.forEach(p => { let t = 0; if (sum > 0) C.forEach(c => t += state.w[c.id] * (p.scores[c.id] || 0)); out[p.id] = sum > 0 ? t / sum : 0; });
+  return out;
+}
+function bestOffer(p){
+  let b = null;
+  (p.offers || []).forEach(o => { if (o.price != null && o.verified !== false && (!b || o.price < b.price)) b = o; });
+  return b;
+}
+const ranking = sc => P.slice().sort((a,b) => sc[b.id] - sc[a.id]);
+const ordered = sc => state.sort ? ranking(sc) : P.slice();
+function num(v){
+  if (typeof v === 'number') return v;
+  if (typeof v === 'boolean') return v ? 1 : 0;
+  if (v && typeof v === 'object' && typeof v.n === 'number') return v.n;
+  return null;
+}
+function txt(v){
+  if (v === true) return L.yes;
+  if (v === false) return L.no;
+  if (v == null || v === '') return L.na;
+  if (typeof v === 'object') return v.t != null ? String(v.t) : L.na;
+  return typeof v === 'number' ? nfAny.format(v) : String(v);
+}
+function srcLinks(f){
+  return (f == null ? [] : [].concat(f)).map(id => h('sup', null, h('a', {href:'#source-' + id, title:id}, '[' + id + ']')));
+}
+const ext = {target:'_blank', rel:'noopener noreferrer nofollow'};
+
+/* ---------- render ---------- */
+function renderHeader(){
+  const m = DATA.meta;
+  $('#kicker').textContent = [m.category, m.market, fill(L.updated, {date:dateFmt(m.date)})].filter(Boolean).join(' · ');
+  $('#title').textContent = m.title;
+  $('#summary').textContent = DATA.summary;
+  if (m.example) $('#demo').hidden = false;
+  const e = DATA.needs || {}, box = $('#needs');
+  const add = (l, v) => v && box.append(h('li', {class:'chip'}, h('b', {text:l + ':'}), ' ' + v));
+  add(L.usage, e.usage); add(L.budget, e.budget);
+  (e.priorities || []).forEach((p,i) => add(fill(L.priority, {n:i + 1}), p));
+  (e.constraints || []).forEach(v => add(L.constraint, v));
+}
+function renderPick(){
+  const s = DATA.pick, p = byId[s.product_id], o = bestOffer(p), url = o && safeUrl(o.url);
+  const off = safeUrl(p.official_url);
+  const left = h('div', null,
+    h('span', {class:'flag', text:L.flag}),
+    h('h3', {text:p.name}),
+    h('ul', null, (s.reasons || []).map(m => h('li', {text:m}))),
+    s.not_for_you_if && h('div', {class:'notfor'}, h('b', {text:L.notfor}), s.not_for_you_if));
+  const right = h('div', {class:'pricebox'},
+    h('div', {class:'amount', text: o ? money(o.price) : L.price_unverified}),
+    h('div', {class:'small', text: o ? [o.store, fill(L.verified_on, {date:dateFmt(o.date)}), o.shipping].filter(Boolean).join(' · ') : L.price_unverified_hint}),
+    url ? h('a', Object.assign({class:'btn primary go', href:url}, ext), L.go) : (off && h('a', Object.assign({class:'btn go', href:off}, ext), L.official)),
+    h('div', {style:'margin-top:12px'}, h('span', {class:'badge ' + p.data_confidence, text:L['c_' + p.data_confidence] || p.data_confidence})));
+  $('#pick-box').append(h('div', {class:'pick'}, left, right));
+  (s.alternatives || []).forEach(a => {
+    const q = byId[a.product_id]; if (!q) return;
+    const bo = bestOffer(q);
+    $('#alts').append(h('div', {class:'alt'},
+      h('div', {class:'who', text:a.profile}),
+      h('b', {text:q.name + (bo ? ' · ' + money(bo.price) : '')}),
+      h('span', {class:'muted', text:a.why})));
+  });
+}
+function renderCards(){
+  const sc = scores(), rk = ranking(sc), box = $('#cards');
+  box.replaceChildren();
+  P.forEach(p => {
+    const o = bestOffer(p), pos = rk.indexOf(p) + 1, url = o && safeUrl(o.url), isPick = p.id === DATA.pick.product_id;
+    box.append(h('article', {class:'card' + (isPick ? ' is-pick' : '')},
+      h('div', {class:'head'},
+        h('div', null, h('div', {class:'brand', text:p.brand || ''}), h('h3', {text:p.name})),
+        h('div', {class:'score'}, one(sc[p.id]), h('small', null, '/10 · ', h('span', {class:'rank'}, '#' + pos)))),
+      h('div', {class:'chips'},
+        isPick && h('span', {class:'badge high', text:L.flag}),
+        h('span', {class:'badge ' + p.data_confidence, text:L['c_' + p.data_confidence] || p.data_confidence})),
+      h('ul', {class:'pro'}, (p.pros || []).map(x => h('li', {text:x}))),
+      h('ul', {class:'con'}, (p.cons || []).map(x => h('li', {text:x}))),
+      h('div', {class:'foot'},
+        h('b', {class:'mono', text: o ? money(o.price) : L.na}),
+        url ? h('a', Object.assign({class:'btn go', href:url}, ext), o.store) : null)));
+  });
+}
+function renderSliders(){
+  const box = $('#sliders'); box.replaceChildren();
+  C.forEach(c => {
+    const val = h('span', {class:'mono', text:String(state.w[c.id])});
+    const input = h('input', {type:'range', min:'0', max:'100', step:'5', value:String(state.w[c.id]), id:'w-' + c.id,
+      oninput: e => { state.w[c.id] = +e.target.value; val.textContent = e.target.value; refresh(); }});
+    box.append(h('div', {class:'slider'}, h('label', {for:'w-' + c.id}, h('span', {text:c.name}), val), input, c.description && h('div', {class:'desc', text:c.description})));
+  });
+}
+function renderRanking(){
+  const sc = scores(), rk = ranking(sc), box = $('#ranking'); box.replaceChildren();
+  rk.forEach((p,i) => box.append(h('div', {class:'bar' + (i === 0 ? ' first' : '')},
+    h('span', {class:'name', title:p.name, text:p.name}),
+    h('div', {class:'track'}, h('div', {class:'fill', style:'width:' + (sc[p.id] * 10) + '%'})),
+    h('span', {class:'val', text:one(sc[p.id])}))));
+  const mine = DATA.pick.product_id, top = rk[0], sum = C.reduce((a,c) => a + state.w[c.id], 0);
+  $('#rank-note').textContent = sum === 0 ? L.rank_zero : top.id === mine ? L.rank_ok : fill(L.rank_other, {top:top.name, mine:byId[mine].name});
+}
+function autoGroups(sc){
+  const val = f => Object.fromEntries(P.map(p => [p.id, f(p)]));
+  return [
+    {name:L.g_brief, rows:[
+      {label:L.r_price, best:'low', values:val(p => { const o = bestOffer(p); return o ? {t:money(o.price), n:o.price} : null; })},
+      {label:L.r_score, unit:'/10', best:'high', values:val(p => ({t:one(sc[p.id]), n:sc[p.id]}))},
+      {label:L.r_conf, best:'none', values:val(p => L['c_' + p.data_confidence] || p.data_confidence)}]},
+    {name:L.g_scores, rows:C.map(c => ({label:c.name, unit:'/10', best:'high', values:val(p => ({t:one(p.scores[c.id] || 0), n:p.scores[c.id] || 0}))}))}
+  ].concat(DATA.feature_groups);
+}
+function renderPvis(){
+  const box = $('#pvis'); box.replaceChildren();
+  P.forEach(p => box.append(h('label', null,
+    h('input', {type:'checkbox', checked:true, onchange: e => { e.target.checked ? state.hidden.delete(p.id) : state.hidden.add(p.id); renderTable(); }}),
+    h('span', {text:p.name}))));
+}
+function renderTable(){
+  const sc = scores(), prods = ordered(sc).filter(p => !state.hidden.has(p.id));
+  const t = $('#tbl'); t.replaceChildren();
+  const thead = h('thead', null, h('tr', null, h('th', {scope:'col', text:L.col_feature}),
+    prods.map(p => h('th', {scope:'col'},
+      p.id === DATA.pick.product_id && h('span', {class:'pickmark'}, L.mark),
+      h('div', {text:p.name}),
+      h('span', {class:'price', text: bestOffer(p) ? money(bestOffer(p).price) : L.price_na})))));
+  const tb = h('tbody'); let shown = 0;
+  const q = state.q.trim().toLowerCase();
+  autoGroups(sc).forEach(g => {
+    const rows = [];
+    (g.rows || []).forEach(r => {
+      if (q && r.label.toLowerCase().indexOf(q) < 0) return;
+      const keys = prods.map(p => JSON.stringify(r.values[p.id] == null ? null : r.values[p.id]));
+      if (state.diff && prods.length > 1 && keys.every(k => k === keys[0])) return;
+      let best = null;
+      if (state.hi && (r.best === 'high' || r.best === 'low')){
+        const ns = prods.map(p => num(r.values[p.id])).filter(n => n != null);
+        if (ns.length > 1){ const m = r.best === 'high' ? Math.max.apply(null, ns) : Math.min.apply(null, ns); if (ns.some(n => n !== m)) best = m; }
+      }
+      const cells = prods.map(p => {
+        const v = r.values[p.id], n = num(v);
+        const inner = v === true ? h('span', {class:'yes', text:L.yes}) : v === false ? h('span', {class:'no', text:L.no})
+          : (v == null || v === '') ? h('span', {class:'nd', text:L.na}) : document.createTextNode(txt(v));
+        return h('td', {class: best != null && n === best ? 'best' : ''}, inner);
+      });
+      rows.push(h('tr', null, h('th', {scope:'row'}, r.label, r.unit ? h('span', {class:'unit', text:' (' + r.unit + ')'}) : null, srcLinks(r.source), r.note && h('span', {class:'rownote', text:r.note})), cells));
+    });
+    if (rows.length){ tb.append(h('tr', {class:'grp'}, h('th', {colspan:String(prods.length + 1), text:g.name})), ...rows); shown += rows.length; }
+  });
+  t.append(thead, tb);
+  const old = $('#empty'); if (old) old.remove();
+  if (!shown) t.after(h('div', {class:'empty', id:'empty', text:L.nomatch}));
+}
+function renderOffers(){
+  const box = $('#offers');
+  $('#price-note').textContent = L.price_note;
+  P.forEach(p => {
+    const best = bestOffer(p);
+    const offs = (p.offers || []).slice().sort((a,b) => (a.price == null) - (b.price == null) || a.price - b.price);
+    box.append(h('div', {class:'panel'}, h('h3', {text:p.name, style:'margin-bottom:8px'}),
+      offs.length ? offs.map(o => {
+        const url = safeUrl(o.url);
+        return h('div', {class:'offer' + (o === best ? ' best' : '')},
+          h('div', null,
+            h('div', {class:'shop'}, o.store, ' ', o === best && h('span', {class:'badge high', text:L.best_price}), o.verified === false && h('span', {class:'badge low', text:L.not_verified})),
+            h('div', {class:'meta', text:[o.sold_by && fill(L.sold_by, {name:o.sold_by}), o.shipping, o.date && fill(L.verified_on, {date:dateFmt(o.date)}), o.note].filter(Boolean).join(' · ')})),
+          h('div', {class:'amt', text: o.price != null ? money(o.price) : L.na}),
+          url && h('a', Object.assign({class:'btn go' + (o === best ? ' primary' : ''), href:url}, ext), L.open_page));
+      }) : h('p', {class:'muted', text:L.no_offers})));
+  });
+}
+function renderSources(){
+  const ul = $('#source-list');
+  DATA.sources.forEach(f => {
+    const url = safeUrl(f.url);
+    ul.append(h('li', {id:'source-' + f.id},
+      h('span', {class:'sid', text:f.id}),
+      url ? h('a', Object.assign({class:'t', href:url, text:f.title}, ext)) : h('b', {class:'t', text:f.title}),
+      h('span', {class:'badge neutral', text:L['t_' + f.type] || f.type}),
+      h('span', {class:'badge ' + f.independence, text:L['i_' + f.independence] || f.independence}),
+      h('span', {class:'sub', text:[f.publisher, f.date && dateFmt(f.date)].filter(Boolean).join(' · ')})));
+  });
+  const lim = $('#limits');
+  (DATA.limits || []).forEach(l => lim.append(h('li', {text:l})));
+  if (!(DATA.limits || []).length) lim.append(h('li', {text:L.no_limits}));
+  $('#foot').textContent = DATA.meta.method || L.footer;
+}
+
+/* ---------- events ---------- */
+function refresh(){ renderCards(); renderRanking(); renderTable(); }
+function toggle(id, key, cb){
+  const b = $(id);
+  b.addEventListener('click', () => { state[key] = !state[key]; b.setAttribute('aria-pressed', String(state[key])); cb(); });
+}
+toggle('#t-diff', 'diff', renderTable);
+toggle('#t-hi', 'hi', renderTable);
+toggle('#t-sort', 'sort', renderTable);
+$('#q').addEventListener('input', e => { state.q = e.target.value; renderTable(); });
+$('#btn-reset').addEventListener('click', () => { C.forEach(c => state.w[c.id] = c.weight); renderSliders(); refresh(); });
+$('#btn-print').addEventListener('click', () => window.print());
+$('#btn-theme').addEventListener('click', () => {
+  const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark ? 'light' : 'dark';
+});
+
+renderHeader(); renderPick(); renderSliders(); renderPvis(); renderOffers(); renderSources(); refresh();
+})();
+</script>
+</body>
+</html>

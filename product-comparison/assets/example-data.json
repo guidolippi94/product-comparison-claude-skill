@@ -1,0 +1,302 @@
+{
+  "meta": {
+    "title": "Robot vacuums under $400",
+    "short_title": "Robot vacuums",
+    "category": "Home",
+    "date": "2026-09-30",
+    "currency": "USD",
+    "locale": "en-US",
+    "market": "United States",
+    "example": true
+  },
+  "needs": {
+    "usage": "80 m2 home with two cats",
+    "budget": "Up to $400",
+    "priorities": [
+      "Suction on pet hair",
+      "Low noise",
+      "Long-term durability"
+    ],
+    "constraints": [
+      "No mandatory cloud"
+    ]
+  },
+  "summary": "Three fictional mid-range models compared. Alpha wins on pet hair and reliability, Beta costs less but is louder, Gamma is the quietest but has less evidence on durability. This sheet is an example to test the skill.",
+  "criteria": [
+    {
+      "id": "suction",
+      "name": "Pet hair suction",
+      "weight": 40,
+      "description": "Measured pickup on hair and fine dirt"
+    },
+    {
+      "id": "noise",
+      "name": "Quietness",
+      "weight": 25,
+      "description": "Sound level in standard mode"
+    },
+    {
+      "id": "durability",
+      "name": "Durability",
+      "weight": 25,
+      "description": "Failures, spare parts, support"
+    },
+    {
+      "id": "value",
+      "name": "Value for money",
+      "weight": 10,
+      "description": "Performance relative to price"
+    }
+  ],
+  "products": [
+    {
+      "id": "alpha",
+      "name": "Example Brand Alpha 5",
+      "brand": "Example Brand",
+      "official_url": "https://www.example.com/alpha-5",
+      "scores": {
+        "suction": 9.0,
+        "noise": 6.5,
+        "durability": 8.5,
+        "value": 7.0
+      },
+      "offers": [
+        {
+          "store": "Store One",
+          "price": 379.0,
+          "url": "https://www.example.com/store-one/alpha-5",
+          "date": "2026-09-30",
+          "shipping": "Free, 2 days",
+          "sold_by": "Store One",
+          "verified": true
+        },
+        {
+          "store": "Store Two",
+          "price": 389.9,
+          "url": "https://www.example.com/store-two/alpha-5",
+          "date": "2026-09-30",
+          "shipping": "$5.90",
+          "verified": true,
+          "note": "Promo until Oct 5"
+        }
+      ],
+      "pros": [
+        "Best pet hair pickup in tests",
+        "Spare parts widely available"
+      ],
+      "cons": [
+        "Medium-high noise in turbo mode"
+      ],
+      "data_confidence": "high",
+      "sources": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    {
+      "id": "beta",
+      "name": "Example Brand Beta 3",
+      "brand": "Example Brand",
+      "official_url": "https://www.example.com/beta-3",
+      "scores": {
+        "suction": 7.0,
+        "noise": 5.0,
+        "durability": 7.0,
+        "value": 9.0
+      },
+      "offers": [
+        {
+          "store": "Store One",
+          "price": 249.0,
+          "url": "https://www.example.com/store-one/beta-3",
+          "date": "2026-09-30",
+          "shipping": "Free, 3 days",
+          "verified": true
+        }
+      ],
+      "pros": [
+        "Lowest price",
+        "Simple app"
+      ],
+      "cons": [
+        "Loudest of the three",
+        "Brush tangles with hair"
+      ],
+      "data_confidence": "medium",
+      "sources": [
+        "s1",
+        "s3"
+      ]
+    },
+    {
+      "id": "gamma",
+      "name": "Other Brand Gamma X",
+      "brand": "Other Brand",
+      "official_url": "https://www.example.com/gamma-x",
+      "scores": {
+        "suction": 7.5,
+        "noise": 9.0,
+        "durability": 5.5,
+        "value": 6.5
+      },
+      "offers": [
+        {
+          "store": "Store Three",
+          "price": null,
+          "url": "https://www.example.com/store-three/gamma-x",
+          "verified": false,
+          "note": "Price not readable from the page"
+        }
+      ],
+      "pros": [
+        "Quiet",
+        "Works offline"
+      ],
+      "cons": [
+        "Little evidence on durability",
+        "Support to be verified"
+      ],
+      "data_confidence": "low",
+      "sources": [
+        "s2"
+      ]
+    }
+  ],
+  "feature_groups": [
+    {
+      "name": "Performance",
+      "rows": [
+        {
+          "label": "Suction power",
+          "unit": "Pa",
+          "best": "high",
+          "values": {
+            "alpha": 6000,
+            "beta": {
+              "t": "4,000 (claimed)",
+              "n": 4000
+            },
+            "gamma": 5000
+          },
+          "note": "Alpha measured in a lab",
+          "source": [
+            "s1"
+          ]
+        },
+        {
+          "label": "Noise, standard mode",
+          "unit": "dB",
+          "best": "low",
+          "values": {
+            "alpha": 62,
+            "beta": 68,
+            "gamma": 54
+          },
+          "source": [
+            "s1",
+            "s3"
+          ]
+        },
+        {
+          "label": "Battery runtime",
+          "unit": "min",
+          "best": "high",
+          "values": {
+            "alpha": 150,
+            "beta": 120,
+            "gamma": 140
+          }
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "rows": [
+        {
+          "label": "Laser mapping",
+          "best": "none",
+          "values": {
+            "alpha": true,
+            "beta": false,
+            "gamma": true
+          }
+        },
+        {
+          "label": "Works without cloud",
+          "best": "none",
+          "values": {
+            "alpha": true,
+            "beta": false,
+            "gamma": true
+          },
+          "note": "User requirement"
+        },
+        {
+          "label": "Warranty",
+          "unit": "years",
+          "best": "high",
+          "values": {
+            "alpha": 3,
+            "beta": 2,
+            "gamma": 2
+          }
+        }
+      ]
+    }
+  ],
+  "pick": {
+    "product_id": "alpha",
+    "reasons": [
+      "Best pet hair pickup in independent tests, your top priority.",
+      "3-year warranty and spare parts available, good for durability.",
+      "Works without cloud, as required."
+    ],
+    "not_for_you_if": "Noise is your absolute priority: Gamma is quieter, but with less evidence on durability.",
+    "alternatives": [
+      {
+        "profile": "If you want to spend less",
+        "product_id": "beta",
+        "why": "About $130 cheaper, but louder and needs more brush maintenance."
+      },
+      {
+        "profile": "If you sleep with the door open",
+        "product_id": "gamma",
+        "why": "The quietest, worth considering only after checking support and price."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Pet hair pickup test (example)",
+      "publisher": "Example Lab",
+      "url": "https://www.example.com/pet-hair-test",
+      "type": "lab_test",
+      "independence": "high",
+      "date": "2026-06-10"
+    },
+    {
+      "id": "s2",
+      "title": "Long-term review (example)",
+      "publisher": "Example Magazine",
+      "url": "https://www.example.com/review",
+      "type": "verified_review",
+      "independence": "mixed",
+      "date": "2026-04-22"
+    },
+    {
+      "id": "s3",
+      "title": "User thread on recurring failures (example)",
+      "publisher": "Example Forum",
+      "url": "https://www.example.com/forum",
+      "type": "user_feedback",
+      "independence": "high",
+      "date": "2026-08-15"
+    }
+  ],
+  "limits": [
+    "Example data: no product, price or source is real.",
+    "The price for Gamma could not be read from the store page."
+  ]
+}

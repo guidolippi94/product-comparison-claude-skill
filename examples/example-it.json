@@ -1,0 +1,302 @@
+{
+  "meta": {
+    "title": "Robot aspirapolvere sotto 400 euro",
+    "short_title": "Robot aspirapolvere",
+    "category": "Casa",
+    "date": "2026-09-30",
+    "currency": "EUR",
+    "locale": "it-IT",
+    "market": "Italia",
+    "example": true
+  },
+  "needs": {
+    "usage": "Casa di 80 mq con due gatti",
+    "budget": "Fino a 400 euro",
+    "priorities": [
+      "Aspirazione su peli",
+      "Rumore basso",
+      "Durata nel tempo"
+    ],
+    "constraints": [
+      "Niente cloud obbligatorio"
+    ]
+  },
+  "summary": "Tre modelli fittizi in fascia media a confronto. Alfa vince per resa su peli e affidabilità, Beta costa meno ma è più rumoroso, Gamma è il più silenzioso ma ha meno riscontri sulla durata. Scheda di esempio per provare la skill.",
+  "criteria": [
+    {
+      "id": "suction",
+      "name": "Aspirazione su peli",
+      "weight": 40,
+      "description": "Resa misurata su peli e sporco fine"
+    },
+    {
+      "id": "noise",
+      "name": "Silenziosità",
+      "weight": 25,
+      "description": "Livello sonoro in modalità standard"
+    },
+    {
+      "id": "durability",
+      "name": "Durata nel tempo",
+      "weight": 25,
+      "description": "Guasti, ricambi, assistenza"
+    },
+    {
+      "id": "value",
+      "name": "Rapporto qualità prezzo",
+      "weight": 10,
+      "description": "Prestazioni rispetto al costo"
+    }
+  ],
+  "products": [
+    {
+      "id": "alpha",
+      "name": "Marca Esempio Alfa 5",
+      "brand": "Marca Esempio",
+      "official_url": "https://www.example.com/alpha-5",
+      "scores": {
+        "suction": 9.0,
+        "noise": 6.5,
+        "durability": 8.5,
+        "value": 7.0
+      },
+      "offers": [
+        {
+          "store": "Negozio Uno",
+          "price": 379.0,
+          "url": "https://www.example.com/store-one/alpha-5",
+          "date": "2026-09-30",
+          "shipping": "Gratis in 2 giorni",
+          "sold_by": "Negozio Uno",
+          "verified": true
+        },
+        {
+          "store": "Negozio Due",
+          "price": 389.9,
+          "url": "https://www.example.com/store-two/alpha-5",
+          "date": "2026-09-30",
+          "shipping": "5,90 euro",
+          "verified": true,
+          "note": "Promo fino al 5 ottobre"
+        }
+      ],
+      "pros": [
+        "Miglior resa su peli nei test",
+        "Ricambi disponibili in Italia"
+      ],
+      "cons": [
+        "Rumore medio-alto in modalità turbo"
+      ],
+      "data_confidence": "high",
+      "sources": [
+        "s1",
+        "s2",
+        "s3"
+      ]
+    },
+    {
+      "id": "beta",
+      "name": "Marca Esempio Beta 3",
+      "brand": "Marca Esempio",
+      "official_url": "https://www.example.com/beta-3",
+      "scores": {
+        "suction": 7.0,
+        "noise": 5.0,
+        "durability": 7.0,
+        "value": 9.0
+      },
+      "offers": [
+        {
+          "store": "Negozio Uno",
+          "price": 249.0,
+          "url": "https://www.example.com/store-one/beta-3",
+          "date": "2026-09-30",
+          "shipping": "Gratis in 3 giorni",
+          "verified": true
+        }
+      ],
+      "pros": [
+        "Prezzo più basso",
+        "App semplice"
+      ],
+      "cons": [
+        "Il più rumoroso",
+        "Spazzola che si intasa di peli"
+      ],
+      "data_confidence": "medium",
+      "sources": [
+        "s1",
+        "s3"
+      ]
+    },
+    {
+      "id": "gamma",
+      "name": "Altra Marca Gamma X",
+      "brand": "Altra Marca",
+      "official_url": "https://www.example.com/gamma-x",
+      "scores": {
+        "suction": 7.5,
+        "noise": 9.0,
+        "durability": 5.5,
+        "value": 6.5
+      },
+      "offers": [
+        {
+          "store": "Negozio Tre",
+          "price": null,
+          "url": "https://www.example.com/store-three/gamma-x",
+          "verified": false,
+          "note": "Prezzo non leggibile dalla pagina"
+        }
+      ],
+      "pros": [
+        "Silenzioso",
+        "Funziona anche offline"
+      ],
+      "cons": [
+        "Pochi riscontri sulla durata",
+        "Assistenza da verificare"
+      ],
+      "data_confidence": "low",
+      "sources": [
+        "s2"
+      ]
+    }
+  ],
+  "feature_groups": [
+    {
+      "name": "Prestazioni",
+      "rows": [
+        {
+          "label": "Potenza di aspirazione",
+          "unit": "Pa",
+          "best": "high",
+          "values": {
+            "alpha": 6000,
+            "beta": {
+              "t": "4.000 (dichiarati)",
+              "n": 4000
+            },
+            "gamma": 5000
+          },
+          "note": "Alfa misurata in laboratorio",
+          "source": [
+            "s1"
+          ]
+        },
+        {
+          "label": "Rumore in modalità standard",
+          "unit": "dB",
+          "best": "low",
+          "values": {
+            "alpha": 62,
+            "beta": 68,
+            "gamma": 54
+          },
+          "source": [
+            "s1",
+            "s3"
+          ]
+        },
+        {
+          "label": "Autonomia",
+          "unit": "min",
+          "best": "high",
+          "values": {
+            "alpha": 150,
+            "beta": 120,
+            "gamma": 140
+          }
+        }
+      ]
+    },
+    {
+      "name": "Funzioni",
+      "rows": [
+        {
+          "label": "Mappatura laser",
+          "best": "none",
+          "values": {
+            "alpha": true,
+            "beta": false,
+            "gamma": true
+          }
+        },
+        {
+          "label": "Funzionamento senza cloud",
+          "best": "none",
+          "values": {
+            "alpha": true,
+            "beta": false,
+            "gamma": true
+          },
+          "note": "Requisito dell'utente"
+        },
+        {
+          "label": "Garanzia",
+          "unit": "anni",
+          "best": "high",
+          "values": {
+            "alpha": 3,
+            "beta": 2,
+            "gamma": 2
+          }
+        }
+      ]
+    }
+  ],
+  "pick": {
+    "product_id": "alpha",
+    "reasons": [
+      "Ha la resa migliore su peli nei test indipendenti, la tua priorità principale.",
+      "Ricambi e assistenza in Italia con 3 anni di garanzia, utile per la durata.",
+      "Funziona senza cloud, come richiesto."
+    ],
+    "not_for_you_if": "Il rumore è la tua priorità assoluta: Gamma è più silenzioso, ma con meno prove sulla durata.",
+    "alternatives": [
+      {
+        "profile": "Se vuoi spendere meno",
+        "product_id": "beta",
+        "why": "Costa circa 130 euro in meno, ma è più rumoroso e richiede più manutenzione della spazzola."
+      },
+      {
+        "profile": "Se dormi con la porta aperta",
+        "product_id": "gamma",
+        "why": "Il più silenzioso, da valutare solo dopo aver verificato assistenza e prezzo."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "s1",
+      "title": "Test di aspirazione su peli (esempio)",
+      "publisher": "Laboratorio Esempio",
+      "url": "https://www.example.com/pet-hair-test",
+      "type": "lab_test",
+      "independence": "high",
+      "date": "2026-06-10"
+    },
+    {
+      "id": "s2",
+      "title": "Recensione a lungo termine (esempio)",
+      "publisher": "Rivista Esempio",
+      "url": "https://www.example.com/review",
+      "type": "verified_review",
+      "independence": "mixed",
+      "date": "2026-04-22"
+    },
+    {
+      "id": "s3",
+      "title": "Thread utenti su guasti ricorrenti (esempio)",
+      "publisher": "Forum Esempio",
+      "url": "https://www.example.com/forum",
+      "type": "user_feedback",
+      "independence": "high",
+      "date": "2026-08-15"
+    }
+  ],
+  "limits": [
+    "Dati di esempio: nessun prodotto, prezzo o fonte è reale.",
+    "Per Gamma non è stato possibile leggere il prezzo dal negozio."
+  ]
+}
