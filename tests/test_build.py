@@ -7,10 +7,10 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "product-comparison" / "scripts"))
+sys.path.insert(0, str(ROOT / "scripts"))
 import build_sheet  # noqa: E402
 
-EXAMPLE = ROOT / "product-comparison" / "assets" / "example-data.json"
+EXAMPLE = ROOT / "assets" / "example-data.json"
 
 
 class BuildTests(unittest.TestCase):

@@ -211,8 +211,8 @@ def build(d, out):
     payload = (
         json.dumps(d, ensure_ascii=False)
         .replace("</", "<\\/")
-        .replace(" ", "\\u2028")
-        .replace(" ", "\\u2029")
+        .replace("\u2028", "\\u2028")
+        .replace("\u2029", "\\u2029")
     )
     page = tpl.replace(PLACEHOLDER, payload)
     page = re.sub(r"<title>.*?</title>", lambda _: f"<title>{html.escape(d['meta']['short_title'])}</title>", page, count=1, flags=re.S)

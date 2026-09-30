@@ -1,0 +1,7 @@
+# Keep GitHub "Download ZIP" limited to the skill itself
+tests/ export-ignore
+examples/ export-ignore
+README.md export-ignore
+README.it.md export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore

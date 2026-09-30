@@ -13,20 +13,15 @@ Paese, lingua e valuta si deducono dal contesto. Interfaccia scheda: EN, IT, ES,
 
 ## Installazione
 
+**Claude.ai / Desktop** — scarica [lo ZIP](https://github.com/guidolippi94/product-comparison-claude-skill/archive/refs/heads/main.zip) (GitHub → *Code → Download ZIP*) e caricalo così com'è in *Impostazioni → Capacità → Skills*. Non serve decomprimerlo.
+
 **Claude Code**
 
 ```bash
-git clone <repo-url> && cd product-comparison-skill
-cp -r product-comparison ~/.claude/skills/
+git clone https://github.com/guidolippi94/product-comparison-claude-skill.git ~/.claude/skills/product-comparison
 ```
 
-(Solo per un progetto: copia in `<progetto>/.claude/skills/`.)
-
-**Claude.ai / Desktop** — comprimi la cartella della skill e caricala in *Impostazioni → Capacità → Skills*:
-
-```bash
-zip -r product-comparison.zip product-comparison -x "*/__pycache__/*"
-```
+(Solo per un progetto: clona in `<progetto>/.claude/skills/product-comparison`.)
 
 Richiede Python 3 (solo libreria standard) e accesso al web per la ricerca.
 
@@ -44,13 +39,12 @@ Claude fa 3–5 domande, ricerca, costruisce la scheda e ti dà un link o un fil
 ## Struttura
 
 ```
-product-comparison/   la skill (installa questa cartella)
-  SKILL.md            flusso e regole
-  references/         modalità, intake, metodo di ricerca, mercati, schema JSON
-  assets/             template scheda + dati di esempio
-  scripts/            build_sheet.py (validatore + generatore)
-examples/             dati di esempio e schede generate
-tests/                test unitari
+SKILL.md          flusso e regole
+references/       modalità, intake, metodo di ricerca, mercati, schema JSON
+assets/           template scheda + dati di esempio
+scripts/          build_sheet.py (validatore + generatore)
+examples/         dati di esempio e schede generate (non nello ZIP)
+tests/            test unitari (non nello ZIP)
 ```
 
 ## Personalizzazione

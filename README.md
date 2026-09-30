@@ -13,20 +13,15 @@ Country, language and currency are inferred from your context. Sheet UI: EN, IT,
 
 ## Install
 
+**Claude.ai / Desktop** — download [the ZIP](https://github.com/guidolippi94/product-comparison-claude-skill/archive/refs/heads/main.zip) (GitHub → *Code → Download ZIP*) and upload it as-is under *Settings → Capabilities → Skills*. No need to unzip.
+
 **Claude Code**
 
 ```bash
-git clone <repo-url> && cd product-comparison-skill
-cp -r product-comparison ~/.claude/skills/
+git clone https://github.com/guidolippi94/product-comparison-claude-skill.git ~/.claude/skills/product-comparison
 ```
 
-(Project-only: copy into `<project>/.claude/skills/` instead.)
-
-**Claude.ai / Desktop** — zip the skill folder and upload it under *Settings → Capabilities → Skills*:
-
-```bash
-zip -r product-comparison.zip product-comparison -x "*/__pycache__/*"
-```
+(Project-only: clone into `<project>/.claude/skills/product-comparison` instead.)
 
 Requires Python 3 (stdlib only) and web access for research.
 
@@ -44,13 +39,12 @@ Claude asks 3–5 intake questions, researches, builds the sheet and hands you a
 ## Layout
 
 ```
-product-comparison/   the skill (install this folder)
-  SKILL.md            workflow and rules
-  references/         modes, intake, research method, markets, JSON schema
-  assets/             sheet template + example data
-  scripts/            build_sheet.py (validator + builder)
-examples/             sample inputs and generated sheets
-tests/                unit tests
+SKILL.md          workflow and rules
+references/       modes, intake, research method, markets, JSON schema
+assets/           sheet template + example data
+scripts/          build_sheet.py (validator + builder)
+examples/         sample inputs and generated sheets (not in the ZIP)
+tests/            unit tests (not in the ZIP)
 ```
 
 ## Customise
